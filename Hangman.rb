@@ -18,10 +18,10 @@ Dictionary = File.open ("5desk.txt")
              position = lambda {|x|   x}
              @linepos = @board 
              @disp= Array.new(@board.length)
-              
+             d=[]
              if @c_disp != nil
-             @disp.each_with_index { |c, k| @c_disp.include?(k)  ? (puts @board[k]) :  (puts lines) }
-             
+               @disp.each_with_index { |c, k| @c_disp.include?(k)  ? (d<<@board[k]) :  (d<<lines) }
+                d.each {|x| print (" #{x} " )}
              else
            	    puts @disp.join(" #{lines} ")
              end
