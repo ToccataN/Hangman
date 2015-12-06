@@ -23,9 +23,10 @@ Dictionary = File.open ("5desk.txt")
                @disp.each_with_index { |c, k| @c_disp.include?(k)  ? (d<<@board[k]) :  (d<<lines) }
                 d.each {|x| print (" #{x} " )}
              else
-           	    puts @disp.join(" #{lines} ")
+           	    puts @disp.each {|c| d << lines }
+           	    d.each {|x| print (" #{x} ")}
              end
-             print "\nincorrect letters: #{@incorrect}\n #{@chances}\n"
+             print "\nincorrect letters: #{@incorrect}\n Chances Left: #{@chances}\n"
              
 		end
 		def findword 
@@ -43,15 +44,16 @@ Dictionary = File.open ("5desk.txt")
 			@alpha=('a'..'z').to_a
 			    @correct=[]
 			    @incorrect=[]
-			     @chances= 12
+			    @chances= 12
             
 			12.times do |x|
 				display
-				
+				the_nuce
 				
 				@guessnum=[]
-				print "can you guess what word this is before you die?"
+				print "can you guess what word this is ?"
 				@guess=gets.chomp.downcase.split("").to_a
+				
 				@guess.each {|x| @guessnum<< @alphanum[x] }
                 
               if @guessnum==@words_index
@@ -60,7 +62,7 @@ Dictionary = File.open ("5desk.txt")
 				end
 			  if @words_index.include?(@guessnum[0]) # ? (@correct << @alpha[@guessnum[0]]) : (@incorrect<< @alpha[@guessnum[0]])}
 			   	    @correct << @alpha[@guessnum[0]]
-			  else
+			  elsif
 			   		@incorrect<< @alpha[@guessnum[0]]
 
 			  end 
@@ -68,7 +70,7 @@ Dictionary = File.open ("5desk.txt")
 			  reveal
 			  @chances= @chances-1
 			end	
-			print "It was #{@letters}...You're ded-tuff...capital D,E,D-TUFF"	
+			print "It was #{@letters}...You're ded-tuff...capital D,E,D-TUFF \n__\n| o\n|i0i\n|/^/"	
         end
         def correct_match
         	@c_match=[]
@@ -89,10 +91,38 @@ Dictionary = File.open ("5desk.txt")
                   @l = @letters[d]
             end
             
-
-
         end
+        def the_nuce
+          if @chances == 12
+              puts "\n\n\n__" 
+          elsif @chances == 11
+          	  puts "\n\n\n|__"
+          elsif @chances == 10
+          	  puts "\n\n|\n|__"
+          elsif @chances == 9
+          	  puts "\n|\n|\n|__"
+          	elsif @chances == 8 
+          		puts "__\n| \n|\n|__"
+          	elsif @chances == 7
+          		puts "__o\n| \n| \n|__"
+          	elsif @chances == 6
+          		puts "__o\n| 0\n| \n|__"
+          	elsif @chances == 5
+          		puts "__o\n| 0\n| ^\n|__"
+          	elsif @chances == 4
+          		puts "__o\n| 0\n|/^\n|__"
+          	elsif @chances == 3
+          		puts "__o\n| 0\n|/^/\n|__"
+          	elsif @chances == 2
+          		puts "__o\n|i0\n|/^/\n|__"
+          	elsif @chances == 1
+          		puts "__o\n|i0i\n|/^/\n|__   Dont Poop Yourself On The Way Down!!!"
+          		
 
+          		
+           end
+        end
+        
 	end
 	class Player
 		attr_reader :name
