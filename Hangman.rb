@@ -82,9 +82,6 @@ require 'rubygems'
 			   	    @correct << @alpha[@guessnum[0]]
 			  elsif
 			   		@incorrect<< @alpha[@guessnum[0]]
-
-            print "you lost a chance...you're goin down!\n"
-            
 			  end 
 			  correct_match
 			  reveal
