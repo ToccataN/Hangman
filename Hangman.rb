@@ -1,16 +1,19 @@
 #Hangman
 #Select dictionary file and create an array of words appropriate for selection
 Dictionary = File.open ("5desk.txt")
+require 'yaml'
+require 'psych'
+require 'rubygems'
 
  module Hangman
 
 	class Game 
-		attr_accessor :board, :letters
+		attr_accessor :board, :letters, :correct, :incorrect, :chances, :name
 		def initialize (playernew)
              @playernew= Player.new(self)
-			 findword
+			       findword
              @board= @letters
-             
+             @name= @playernew.name
 		end
 		def display 
 			
@@ -26,7 +29,7 @@ Dictionary = File.open ("5desk.txt")
            	    puts @disp.each {|c| d << lines }
            	    d.each {|x| print (" #{x} ")}
              end
-             print "\nincorrect letters: #{@incorrect}\n Chances Left: #{@chances}\n"
+             print "\nincorrect letters: #{@incorrect}\n#{@name} has #{@chances} chances left :(\n"
              
 		end
 		def findword 
@@ -41,12 +44,27 @@ Dictionary = File.open ("5desk.txt")
               @index_length = @words_index.length.to_i
 		end
 		def play
-			@alpha=('a'..'z').to_a
+			
+
+			  @alpha=('a'..'z').to_a
 			    @correct=[]
 			    @incorrect=[]
 			    @chances= 12
-            
-			12.times do |x|
+          
+          @name= @playernew.name
+
+      print "load game? y/n"
+      lg= gets.chomp.downcase
+      if lg == "y"
+        load
+        @letters=@letters
+        @correct=@correct
+        @c_disp=@c_disp
+      elsif lg != "y"
+        nil
+      end
+      @board= @letters      
+			chances.times do |x|
 				display
 				the_nuce
 				
@@ -57,21 +75,24 @@ Dictionary = File.open ("5desk.txt")
 				@guess.each {|x| @guessnum<< @alphanum[x] }
                 
               if @guessnum==@words_index
-				   print "#{@playernew.name} lives!!!" 
-				   return
-				end
+				         print "#{@playernew.name} lives!!!" 
+				         return
+			      	end
 			  if @words_index.include?(@guessnum[0]) # ? (@correct << @alpha[@guessnum[0]]) : (@incorrect<< @alpha[@guessnum[0]])}
 			   	    @correct << @alpha[@guessnum[0]]
 			  elsif
 			   		@incorrect<< @alpha[@guessnum[0]]
 
+            print "you lost a chance...you're goin down!\n"
+            
 			  end 
 			  correct_match
 			  reveal
-			  @chances= @chances-1
+			  @chances -= 1
+			  save
 			end	
 			print "It was #{@letters}...You're ded-tuff...capital D,E,D-TUFF \n__\n| o\n|i0i\n|/^/"	
-        end
+    end
         def correct_match
         	@c_match=[]
         	@correct.each do |y|
@@ -123,18 +144,51 @@ Dictionary = File.open ("5desk.txt")
            end
         end
         
+        def save
+           hash = {
+            name: @name,
+            chances: @chances,
+            incorrect: @incorrect,
+            correct: @correct,
+            letters: @letters,
+            c_disp: @c_disp
+           }
+           if File.exist?('save.yml')
+              File.open('save.yml', 'w') do |file|
+                file.write(Psych.dump(hash))
+              end
+            else
+              file =File.new('save.yml', 'w') 
+              file.write(Psych.dump(hash))
+
+           end
+        end
+        def load
+              saves= Psych.load_file('save.yml')
+             
+              @name = saves[:name]
+              @chances =  saves[:chances]
+              @incorrect= saves[:incorrect]
+              @correct= saves[:correct]
+              @letters= saves[:letters]
+              @c_disp= saves[:c_disp]
+              
+            
+         end
+
+        
 	end
 	class Player
-		attr_reader :name
+		attr_accessor :name
 		def initialize (name)
             print "What is your name?"
              @name = gets.chomp
-
+             
         end
         
 
 	end
-
+   
 end
 
 include Hangman

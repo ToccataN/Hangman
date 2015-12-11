@@ -1,0 +1,27 @@
+---
+:name: mouthface
+:chances: 0
+:incorrect:
+- i
+- u
+- t
+- s
+- n
+- m
+- y
+- v
+- p
+:correct:
+- o
+- e
+- w
+:letters:
+- d
+- o
+- w
+- e
+- r
+:c_disp:
+- 1
+- 3
+- 2
